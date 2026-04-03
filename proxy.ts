@@ -13,7 +13,7 @@ export async function proxy(req: NextRequest) {
         getAll() {
           return req.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: { name: string; value: string; options?: any }[]) {
           cookiesToSet.forEach(({ name, value, options }) => {
             res.cookies.set(name, value, options)
           })
@@ -24,7 +24,6 @@ export async function proxy(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession()
   
-  // Chronione ścieżki
   const protectedPaths = ['/dashboard', '/team', '/coordinator']
   const isProtected = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
   
@@ -33,7 +32,6 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(redirectUrl)
   }
   
-  // Jeśli zalogowany i próbuje wejść na login/register - przekieruj na dashboard
   if (session && (req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register')) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
