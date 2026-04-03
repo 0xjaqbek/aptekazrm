@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Opcjonalnie: wyłącz warning o middleware
+  experimental: {
+    // Ustawienia dla proxy
+  },
 };
 
 export default nextConfig;
